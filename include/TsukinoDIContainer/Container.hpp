@@ -140,16 +140,23 @@ namespace TsukinoDIContainer {
 	//! @brief テンプレート関数の実装
 	//-------------------------------------------------------------
 	template<typename TInterface, typename TImplementation>
-	void Container::registerType(Lifecycle cycle_) {
+	inline void Container::registerType(Lifecycle cycle_) {
 		std::unique_lock<std::shared_mutex> lock(mutex_); // スレッドセーフ
-		// 型をハッシュキーとして取得
+		// 登録済み確認
 		const auto type = std::type_index(typeid(TInterface));
-		// 既に登録済みか確認
 		if (registrations_.find(type) != registrations_.end()) {
+			// 既に登録済みなら例外、上書きしたい場合はReplaceを使用させる。
 			throw ResolveException("Type already registered: " + std::string(type.name()));
 		}
 		// 登録処理
-		registerCtor<TInterface, TImplementation>(cycle_);
+		registrations_[type] = {
+			cycle_,
+			{}, // 依存なし
+			[](const std::vector<std::shared_ptr<void>>&) {
+				return std::make_shared<TImplementation>();
+			}
+		};
+
 	}
 
 	//-------------------------------------------------------------
