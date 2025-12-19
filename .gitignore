@@ -39,3 +39,36 @@
 
 # debug information files
 *.dwo
+
+# CMake build
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.suo
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+
+# Visual Studio build output
+x64/
+Debug/
+Release/
+
+
+# IDE settings
+.idea/
+.vscode/
+
+# Misc
+*.log
+*.tmp
+*.bak
+*.swp
