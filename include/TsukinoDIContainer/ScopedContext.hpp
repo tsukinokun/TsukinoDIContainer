@@ -4,6 +4,13 @@
 //! @author Rú±ˆ¤ ( Qiita:tsukino_   github:tsukino)
 //-------------------------------------------------------------
 #pragma once
+
+#include <memory>
+#include <unordered_map>
+#include <typeindex>
+#include <vector>
+#include <shared_mutex>
+
 namespace TsukinoDIContainer {
 	class Container; // ‘O•ûéŒ¾
 	//-------------------------------------------------------------
