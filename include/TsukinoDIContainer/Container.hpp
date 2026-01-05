@@ -163,7 +163,7 @@ namespace TsukinoDIContainer {
 	//! @brief 型登録上書き
 	//-------------------------------------------------------------
 	template<typename TInterface, typename TImplementation>
-	void Container::replaceType(Lifecycle cycle_) {
+	inline void Container::replaceType(Lifecycle cycle_) {
 		std::unique_lock<std::shared_mutex> lock(mutex_); // スレッドセーフ
 		//型をハッシュキーとして取得
 		const auto type = std::type_index(typeid(TInterface));
@@ -188,7 +188,7 @@ namespace TsukinoDIContainer {
 	//! @return 生成されたインスタンス
 	//-------------------------------------------------------------
 	template<typename TImplementation, typename... TDeps, std::size_t... I>
-	static std::shared_ptr<void> callCtorImpl(
+	inline static std::shared_ptr<void> callCtorImpl(
 		const std::vector<std::shared_ptr<void>>& args,
 		std::index_sequence<I...>)
 	{
@@ -202,7 +202,7 @@ namespace TsukinoDIContainer {
 	//! @brief コンストラクタ呼び出し補助
 	//-------------------------------------------------------------
 	template<typename TInterface, typename TImplementation, typename... TDeps>
-	void Container::registerCtor(Lifecycle cycle) {
+	inline void Container::registerCtor(Lifecycle cycle) {
 		std::unique_lock<std::shared_mutex> lock(mutex_);	// スレッドセーフ
 		// 型をハッシュキーとして取得
 		const auto type = std::type_index(typeid(TInterface));
@@ -230,7 +230,7 @@ namespace TsukinoDIContainer {
 	//! @brief コンストラクタ呼び出し補助上書き
 	//-------------------------------------------------------------
 	template<typename TInterface, typename TImplementation, typename... TDeps>
-	void Container::replaceCtor(Lifecycle cycle_) {
+	inline void Container::replaceCtor(Lifecycle cycle_) {
 		std::unique_lock<std::shared_mutex> lock(mutex_);
 		const auto type = std::type_index(typeid(TInterface));
 		registrations_[type] = Registration{
@@ -249,7 +249,7 @@ namespace TsukinoDIContainer {
 	//! @brief インスタンス登録
 	//-------------------------------------------------------------
 	template<typename TInterface>
-	void Container::registerInstance(std::shared_ptr<TInterface> instance) {
+	inline void Container::registerInstance(std::shared_ptr<TInterface> instance) {
 		std::unique_lock<std::shared_mutex> lock(mutex_); // スレッドセーフ
 		// 型をハッシュキーとして取得
 		const auto type = std::type_index(typeid(TInterface));
@@ -271,7 +271,7 @@ namespace TsukinoDIContainer {
 	//! @brief インスタンス登録上書き
 	//-------------------------------------------------------------
 	template<typename TInterface>
-	void Container::replaceInstance(std::shared_ptr<TInterface> instance) {
+	inline void Container::replaceInstance(std::shared_ptr<TInterface> instance) {
 		std::unique_lock<std::shared_mutex> lock(mutex_); // スレッドセーフ
 		// 型をハッシュキーとして取得
 		const auto type = std::type_index(typeid(TInterface));
@@ -289,7 +289,7 @@ namespace TsukinoDIContainer {
 	//! @brief 型解決（循環依存検出付き）
 	//-------------------------------------------------------------
 	template<typename TInterface>
-	std::shared_ptr<TInterface> Container::resolve() {
+	inline std::shared_ptr<TInterface> Container::resolve() {
 		const auto key = std::type_index(typeid(TInterface));
 		return std::static_pointer_cast<TInterface>(resolveByKey(key));
 	}
@@ -298,7 +298,7 @@ namespace TsukinoDIContainer {
 	//! @brief 型が登録済みか確認
 	//-------------------------------------------------------------
 	template<typename TInterface>
-	bool Container::isRegistered() const {
+	inline bool Container::isRegistered() const {
 		std::shared_lock<std::shared_mutex> lock(mutex_); // 読み取り専用ロック
 		// 型をハッシュキーとして取得
 		const auto type = std::type_index(typeid(TInterface));
